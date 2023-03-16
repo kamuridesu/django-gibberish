@@ -3,7 +3,51 @@ services:
   redis:
     container_name: redis-stack-server
     image: redis/redis-stack-server:latest
+    networks:
+      - django_network
     ports:
       - 6379:6379
 
-  
+  web:
+    build: ./MedicalCentre
+    command: sh -c "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8080"
+    container_name: web
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+    depends_on:
+      - redis
+    ports:
+      - 8080:8080
+    hostname: web
+    networks:
+      - django_network
+    restart: on-failure
+
+  celery_worker:
+    build: ./MedicalCentre
+    command: sh -c "celery -A MedicalCentre worker -l info"
+    container_name: celery_worker
+    environment:
+      - C_FORCE_ROOT=True
+    depends_on:
+      - web
+      - redis
+    deploy:
+      
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 200m
+        reservations:
+          cpus: '0.25'
+          memory: 100m
+    hostname: celery_worker
+    networks:
+      - django_network
+    restart: on-failure
+
+
+networks:
+  django_network:

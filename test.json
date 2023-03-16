@@ -1,0 +1,30 @@
+
+
+{
+    "medicos": [
+        {
+            "pacientes": [
+                {
+                    "consultas": [
+                        {
+                            "motivo_da_consulta": "test",
+                            "data_agendada": "2000-02-10T12:12:00Z",
+                            "detalhes_da_consulta": "aetaefaervarv",
+                            "paciente": 1
+                        }
+                    ],
+                    "nome_do_paciente": "Kamuri",
+                    "idade_do_paciente": 22,
+                    "peso_do_paciente": "86.50",
+                    "altura_do_paciente": "173.00",
+                    "detalhes_do_paciente": "Test",
+                    "medico": 1
+                }
+            ],
+            "nome_do_medico": "test",
+            "crm": "123",
+            "clinica": 2
+        }
+    ],
+    "nome_da_clinica": "Test"
+}
