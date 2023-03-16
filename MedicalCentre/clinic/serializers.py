@@ -1,50 +1,69 @@
 from rest_framework import serializers
 from .models import Clinica, Medico, Paciente, Consulta
+from .tasks import create_nested_objects
+
+from pprint import pprint
 
 
-class ClinicaSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    nome_da_clinica = serializers.CharField(required=True, allow_blank=False, max_length=100)
+class ConsultaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consulta
+        fields = '__all__'
+
+
+class PacienteSerializer(serializers.ModelSerializer):
+    consultas = ConsultaSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Paciente
+        fields = '__all__'
+
+
+class MedicoSerializer(serializers.ModelSerializer):
+    pacientes = PacienteSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Medico
+        fields = '__all__'
+
+
+class NestedConsultaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consulta
+        fields = '__all__'
+
+
+class NestedPacienteSerializer(serializers.ModelSerializer):
+    consultas = NestedConsultaSerializer(many=True)
+
+    class Meta:
+        model = Paciente
+        fields = '__all__'
+
+
+class NestedMedicoSerializer(serializers.ModelSerializer):
+    pacientes = NestedPacienteSerializer(many=True)
+
+    class Meta:
+        model = Medico
+        fields = '__all__'
+
+
+class NestedClinicaSerializer(serializers.ModelSerializer):
+    medicos = NestedMedicoSerializer(many=True)
+
+    class Meta:
+        model = Clinica
+        fields = '__all__'
 
     def create(self, validated_data):
-        return Clinica.objects.create(**validated_data)
-    
-    def update(self, instance: Clinica, validated_data: dict):
-        instance.nome_da_clinica = validated_data.get('nome_da_clinica')
-        instance.save()
-        return instance
-    
-
-# class MedicoSerializer(serializers.Serializer):
-#     id = serializers.IntegerField(read_only=True)
-#     nome_do_medico = serializers.CharField(required=True, allow_blank=False, max_length=100)
-#     crm = serializers.CharField(required=True, allow_blank=False, max_length=100)
-
-#     def create(self, validated_data):
-#         return Medico.objects.create(**validated_data)
-    
-#     def update(self, instance: Medico, validated_data: dict):
-#         instance.nome_do_medico = validated_data.get('nome_do_medico')
-#         instance.crm = validated_data.get('crm')
-#         instance.save()
-#         return instance
+        return create_nested_objects.delay(validated_data)
 
 
-# class PacienteSerializer(serializers.Serializer):
-#     id = serializers.IntegerField(read_only=True)
-#     nome_do_paciente = serializers.CharField(required=True, allow_blank=False, max_length=100)
-#     idade_do_paciente = serializers.IntegerField(required=True, allow_blank=False)
-#     peso_do_paciente = serializers.DecimalField(required=True, allow_blank=False)
-#     detalhes_do_paciente = serializers.CharField(required=True, allow_blank=False)
+class ClinicaSerializer(serializers.ModelSerializer):
+    medicos = MedicoSerializer(many=True, read_only=True)
 
-#     def create(self, validated_data):
-#         return Paciente.objects.create(**validated_data)
-    
-#     def update(self, instance: Paciente, validated_data: dict):
-#         instance.nome_do_paciente = validated_data.get('nome_do_paciente')
-#         instance.idade_do_paciente = validated_data.get('idade_do_paciente')
-#         instance.peso_do_paciente = validated_data.get('peso_do_paciente')
-#         instance.altura_do_paciente = validated_data.get('altura_do_paciente')
-#         instance.detalhes_do_paciente = validated_data.get('detalhes_do_paciente')
-#         instance.save()
-#         return instance
+    class Meta:
+        model = Clinica
+        fields = '__all__'
+
