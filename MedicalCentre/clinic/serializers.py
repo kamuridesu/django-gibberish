@@ -57,8 +57,8 @@ class NestedClinicaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        return create_nested_objects.delay(validated_data)
-
+        clinica = create_nested_objects.delay(validated_data)
+        return self.to_representation(clinica.get())
 
 class ClinicaSerializer(serializers.ModelSerializer):
     medicos = MedicoSerializer(many=True, read_only=True)
