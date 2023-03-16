@@ -1,7 +1,7 @@
 # django-gibberish
 learning to integrate django with celery and django-rest-api and redis
 
-# thigs to be improved
+# things to be improved
 
 - Add more methods to the tasks to avoid databases operations from blocking the responses.
 - Add tests
