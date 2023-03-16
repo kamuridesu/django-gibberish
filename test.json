@@ -5,14 +5,7 @@
         {
             "pacientes": [
                 {
-                    "consultas": [
-                        {
-                            "motivo_da_consulta": "test",
-                            "data_agendada": "2000-02-10T12:12:00Z",
-                            "detalhes_da_consulta": "aetaefaervarv",
-                            "paciente": 1
-                        }
-                    ],
+                   
                     "nome_do_paciente": "Kamuri",
                     "idade_do_paciente": 22,
                     "peso_do_paciente": "86.50",

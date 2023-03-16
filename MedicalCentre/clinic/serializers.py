@@ -36,7 +36,7 @@ class NestedConsultaSerializer(serializers.ModelSerializer):
 
 
 class NestedPacienteSerializer(serializers.ModelSerializer):
-    consultas = NestedConsultaSerializer(many=True)
+    consultas = NestedConsultaSerializer(many=True, required=False)
 
     class Meta:
         model = Paciente
@@ -44,7 +44,7 @@ class NestedPacienteSerializer(serializers.ModelSerializer):
 
 
 class NestedMedicoSerializer(serializers.ModelSerializer):
-    pacientes = NestedPacienteSerializer(many=True)
+    pacientes = NestedPacienteSerializer(many=True, required=False)
 
     class Meta:
         model = Medico
@@ -52,7 +52,7 @@ class NestedMedicoSerializer(serializers.ModelSerializer):
 
 
 class NestedClinicaSerializer(serializers.ModelSerializer):
-    medicos = NestedMedicoSerializer(many=True)
+    medicos = NestedMedicoSerializer(many=True, required=False)
 
     class Meta:
         model = Clinica
