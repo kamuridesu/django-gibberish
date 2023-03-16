@@ -1,3 +1,13 @@
+r"""Models for clinic
+Relations:
+    Clinica has a one-to-many relation with:
+        Medico has a one-to-many relation with:
+            Paciente has a one-to-many relation with:
+                Consulta
+This is just a test for docstring
+"""
+
+
 from django.db import models
 from django.contrib import admin
 from django.utils import timezone

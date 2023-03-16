@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 # Celery settings
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
+# Using pickle serializer because we're passing a Python Object to the worker
+# Json cannot serialize all the objects
+# This is insecure but allow us to share almost any Python Object
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT = ['pickle']

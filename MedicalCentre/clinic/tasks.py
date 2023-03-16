@@ -1,3 +1,5 @@
+r"""This file will hold as many tasks as possible for each method"""
+
 from celery import shared_task
 from .models import Clinica, Medico, Paciente, Consulta
 

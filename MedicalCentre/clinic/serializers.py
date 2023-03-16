@@ -1,8 +1,10 @@
+r"""The NestedClinicaSerializer is a big serializer
+It allow us to create multiple objects without directly referencing them.
+The problem is that we need to relate the new objects with ones that already exists (i'm looking for a fix for this). Another problem is that every field for every model is required."""
+
 from rest_framework import serializers
 from .models import Clinica, Medico, Paciente, Consulta
 from .tasks import create_nested_objects
-
-from pprint import pprint
 
 
 class ConsultaSerializer(serializers.ModelSerializer):

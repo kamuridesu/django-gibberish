@@ -29,6 +29,7 @@ services:
     command: sh -c "celery -A MedicalCentre worker -l info"
     container_name: celery_worker
     environment:
+      # This environment variable must be set to allow celery with pickle serializer to run with root access
       - C_FORCE_ROOT=True
     depends_on:
       - web
@@ -37,7 +38,7 @@ services:
     hostname: celery_worker
     networks:
       - django_network
-    restart: on-failure
+
 
 
 networks:
