@@ -7,6 +7,7 @@ services:
       - django_network
     ports:
       - 6379:6379
+    restart: on-failure
 
   web:
     build: ./MedicalCentre
@@ -32,17 +33,7 @@ services:
     depends_on:
       - web
       - redis
-    deploy:
-      
-      restart_policy:
-        condition: on-failure
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 200m
-        reservations:
-          cpus: '0.25'
-          memory: 100m
+    restart: on-failure
     hostname: celery_worker
     networks:
       - django_network
